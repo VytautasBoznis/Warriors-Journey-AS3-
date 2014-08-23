@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<mx:Application
+  xmlns:mx="http://www.adobe.com/2006/mxml"
+  layout="absolute"
+  width="640"
+  height="480"
+  frameRate="60"
+  creationComplete="setup()">
+ 
+  <mx:Script><![CDATA[
+  
+	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import mx.core.*
+	import grafics.*;
+ 
+	private var logo : Logo;
+	private var mainMenu : MainMenu;
+	private var ui : UIComponent = new UIComponent();
+	
+	public function setup() : void
+	{
+		addChild(ui);
+		logo = new Logo();
+		ui.addChild(logo);
+		
+		addEventListener(MouseEvent.CLICK, enterMainMenu);
+	}
+	
+	public function enterMainMenu(event : MouseEvent) : void
+	{
+		//kills logo listener and removes logo object
+		removeEventListener(MouseEvent.CLICK, enterMainMenu);
+
+		ui.removeChild(logo);
+		logo = null;
+		
+		//from this point everything is done inside MainMenu
+
+		mainMenu = MainMenu.getInstance();
+		ui.addChild(mainMenu);
+		
+		stage.addEventListener(KeyboardEvent.KEY_DOWN, keyInput);
+	}
+	
+	/*
+	* Forward keyboard input to main menu and then to the game
+	*/
+	
+	public function keyInput(event : KeyboardEvent) : void 
+	{
+		mainMenu.input(event.keyCode);
+	}
+	
+  ]]></mx:Script>
+</mx:Application>
